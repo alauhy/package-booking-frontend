@@ -1,7 +1,6 @@
 <template>
   <div id="main">
     <a-layout>
-      <a-layout-header>Header</a-layout-header>
       <a-layout-content>
         <List></List>
       </a-layout-content>

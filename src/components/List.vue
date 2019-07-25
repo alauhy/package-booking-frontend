@@ -1,34 +1,54 @@
 <template>
     <div id="pkg">
-      <h2>运单号&nbsp&nbsp&nbsp&nbsp收件人&nbsp&nbsp&nbsp&nbsp电话&nbsp&nbsp&nbsp&nbsp状态&nbsp&nbsp&nbsp&nbsp预约时间</h2>
-      <dl >
-        <dt v-for="(pkg,index) in packages" :key="index">
-          <span>{{pkg.orderId}}</span>
-          <span>{{pkg.customerName}}</span>
-          <span>{{pkg.phone}}</span>
-          <span v-if="pkg.status === 1">未取件</span>
-          <span v-else-if="pkg.status === 2">已预约</span>
-          <span v-else>已取件</span>
-
-          <span v-if="pkg.bookTime === 0"></span>
-          <span v-else>{{pkg.bookTime}}</span>
-          <button v-if="pkg.status !== 3" @click="setStatus(pkg.id)">确定收货</button>
-        </dt>
-
-      </dl>
-    <button @click="getAllPackages">All</button>
-    <button @click="getNotFetch">未取件</button>
-    <button @click="getBooked">已预约</button>
-    <button @click="getFetched">已取件</button>
-    <button @click="goHome">+添加</button>
+      <a-table :columns="columns"
+               :dataSource="this.packages"
+      >
+       <span slot="status" v-if="packages.status===2">未取件</span>
+      </a-table>
+    <a-button type="primary" class="foot-btn" @click="getAllPackages">All</a-button>
+    <a-button type="primary" class="foot-btn" @click="getNotFetch">未取件</a-button>
+    <a-button type="primary" class="foot-btn" @click="getBooked">已预约</a-button>
+    <a-button type="primary" class="foot-btn" @click="getFetched">已取件</a-button>
+    <a-button type="primary" class="foot-btn" @click="goHome">+添加</a-button>
     </div>
 </template>
 
 <script>
+  const columns = [
+    {
+      title: '运单号',
+      dataIndex: 'orderId',
+      key: 'orderId',
+    }, {
+      title: '收件人',
+      dataIndex: 'customerName',
+      key: 'customerName',
+    },
+    {
+      title: '电话',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: '预约时间',
+      dataIndex: 'bookTime',
+      key: 'bookTime',
+    },
+  ];
 
 import {mapState} from 'vuex'
   export default {
     name: 'List',
+    data(){
+      return{
+        columns,
+      }
+    },
     computed:mapState({
       packages: state => state.packageList
     }),
@@ -58,6 +78,9 @@ import {mapState} from 'vuex'
 
 <style scoped>
   span{
+    margin: 10px;
+  }
+  .foot-btn{
     margin: 10px;
   }
 </style>

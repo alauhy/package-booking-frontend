@@ -1,5 +1,6 @@
 <template>
   <div id="add">
+    <h2>包裹入库</h2>
     <a-form
       :form="form"
       @submit="handleSubmit"
@@ -14,7 +15,6 @@
           v-decorator="[
           'orderId',
           {rules: [{ required: true, message: '请输入运单号！' }]},
-          setFieldsValue = this.
         ]"
       />
     </a-form-item>
@@ -24,7 +24,6 @@
         :wrapper-col="{ span: 12 }"
       >
         <a-input
-          v-model ="this.customerName"
           v-decorator="[
           'receipt',
           {rules: [{ required: true, message: '请输入收件人！' }]}
@@ -37,7 +36,6 @@
         :wrapper-col="{ span: 12 }"
       >
         <a-input
-          v-model ="this.phone"
           v-decorator="[
           'phone',
           {rules: [{ required: true, message: '请输入收件人电话!' }]}
@@ -50,7 +48,6 @@
         :wrapper-col="{ span: 12 }"
       >
         <a-input
-          v-model ="this.weight"
           v-decorator="[
           'weight',
           {rules: [{ required: true, message: '请输入运单重量！' }]}
@@ -61,10 +58,16 @@
         <a-button
           type="primary"
           html-type="submit"
-          @click="addPackage"
+          class="add-a-btn"
         >
-          Submit
+          确定
         </a-button>
+      <a-button
+        class="add-a-btn"
+        type="primary"
+      @click="goBack">
+        取消
+      </a-button>
     </a-form>
   </div>
 </template>
@@ -74,10 +77,6 @@
     name: 'Add',
     data () {
       return {
-        orderId: getFieldsValue[orderId],
-        customerName: '',
-        phone: '',
-        weight: '',
         formLayout: 'horizontal',
         form: this.$form.createForm(this),
       }
@@ -87,22 +86,31 @@
         e.preventDefault();
         this.form.validateFields((err, values) => {
           if (!err) {
-            console.log('Received values of form: ', values);
+            let pkg = {
+              orderId: values.orderId,
+              customerName: values.receipt,
+              phone: values.phone,
+              weight: parseFloat(values.weight),
+              status: 1
+            }
+            this.$store.dispatch('addPackage', pkg)
+            this.$router.push('/')
           }
         });
       },
       addPackage () {
-        if (this.orderId !== '' && this.customerName !== '' && this.phone !== '' && this.weight !== '') {
+        if (this.form.orderId !== '' && this.form.customerName !== '' && this.form.phone !== '' && this.form.weight !== '') {
           let pkg = {
-            orderId: this.orderId,
-            customerName: this.customerName,
-            phone: this.phone,
-            weight: parseFloat(this.weight),
+            orderId: this.form.orderId,
+            customerName: this.form.customerName,
+            phone: this.form.phone,
+            weight: parseFloat(this.form.weight),
             status: 1
           }
           this.$store.dispatch('addPackage', pkg)
           this.$router.push('/')
         } else {
+          console.log(this.form)
           alert('请填写所有信息')
         }
       },
@@ -114,5 +122,11 @@
 </script>
 
 <style scoped>
+  #add{
+    text-align: center;
+  }
+  .add-a-btn{
+    margin: 10px;
+  }
 
 </style>
