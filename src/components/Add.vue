@@ -98,22 +98,7 @@
           }
         });
       },
-      addPackage () {
-        if (this.form.orderId !== '' && this.form.customerName !== '' && this.form.phone !== '' && this.form.weight !== '') {
-          let pkg = {
-            orderId: this.form.orderId,
-            customerName: this.form.customerName,
-            phone: this.form.phone,
-            weight: parseFloat(this.form.weight),
-            status: 1
-          }
-          this.$store.dispatch('addPackage', pkg)
-          this.$router.push('/')
-        } else {
-          console.log(this.form)
-          alert('请填写所有信息')
-        }
-      },
+
       goBack () {
         this.$router.push('/')
       }

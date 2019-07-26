@@ -31,6 +31,7 @@ const addPackage = ({ dispatch }, pkg) => {
     }).catch(error => console.log(error))
 }
 const setStatusFetched = ({ dispatch, state }, id) => {
+  debugger
   let pkg = state.packageList.find(n => n.id === id)
   pkg.status = 3
   axios.put(`http://localhost:8080/packages/${id}`, pkg)
